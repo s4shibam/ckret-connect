@@ -25,7 +25,7 @@ export const errorHandler = (err, req, res, next) => {
 
   // JWT EXPIRE error
   if (err.name === 'TokenExpiredError') {
-    const message = 'JSON Web Token is Expired, Try again';
+    const message = 'Session expired, Sign in again';
     err = new CustomError(message, 400);
   }
 
