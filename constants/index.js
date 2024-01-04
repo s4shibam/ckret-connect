@@ -8,8 +8,26 @@ export const DEFAULT_CONFIG = {
   inbox_max_size: 50,
   is_inbox_enabled: true,
   message_max_length: 150,
-  feedback_message: 'Thank You',
-  feedback_message_max_length: 50
+  feedback_message: 'Thank You'
+};
+
+export const CHAR_SIZE_LIMIT = {
+  NAME: {
+    MIN: 1,
+    MAX: 100
+  },
+  USERNAME: {
+    MIN: 5,
+    MAX: 20
+  },
+  FEEDBACK_MESSAGE: {
+    MIN: 1,
+    MAX: 100
+  }
+};
+
+export const MESSAGE_TYPE = {
+  ANONYMOUS_MESSAGE: 'AM'
 };
 
 export const HTTP_STATUS_CODE_MAP = {
