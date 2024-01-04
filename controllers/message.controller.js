@@ -35,7 +35,7 @@ export const submitMessage = cae(async (req, res, next) => {
   if (messageContent.length > user.message_max_length) {
     return next(
       new CustomError(
-        `Message length can not be more than ${user.message_max_length} characters`,
+        `Message length should be between 1 to ${user.message_max_length} characters`,
         400
       )
     );

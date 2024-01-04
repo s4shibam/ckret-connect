@@ -1,9 +1,17 @@
 import mongoose from 'mongoose';
-import { AUTH_PROVIDER, DEFAULT_CONFIG } from '../constants/index.js';
+import {
+  AUTH_PROVIDER,
+  CHAR_SIZE_LIMIT,
+  MESSAGE_TYPE
+} from '../constants/index.js';
 import { catchAsyncError as cae } from '../middleware/catch-async-error.js';
 import User from '../models/user.model.js';
 import CustomError from '../utils/custom-error.js';
-import { createSigninResponseObj, isValidUsername } from '../utils/index.js';
+import {
+  createSigninResponseObj,
+  isInvalidLength,
+  isValidUsername
+} from '../utils/index.js';
 
 /*
 USE: Create new user and return details or return existing user  
@@ -54,6 +62,15 @@ export const updateName = cae(async (req, res, next) => {
 
   if (!name) {
     return next(new CustomError('Name is required', 400));
+  }
+
+  if (isInvalidLength(name, CHAR_SIZE_LIMIT.NAME)) {
+    return next(
+      new CustomError(
+        `Name length should be between ${CHAR_SIZE_LIMIT.NAME.MIN} to ${CHAR_SIZE_LIMIT.NAME.MAX} characters`,
+        400
+      )
+    );
   }
 
   user.name = name;
@@ -116,10 +133,10 @@ export const updateFeedbackMessage = cae(async (req, res, next) => {
     return next(new CustomError('Feedback message is required', 400));
   }
 
-  if (feedbackMessage.length > DEFAULT_CONFIG.feedback_message_max_length) {
+  if (isInvalidLength(feedbackMessage, CHAR_SIZE_LIMIT.FEEDBACK_MESSAGE)) {
     return next(
       new CustomError(
-        `Feedback message length can not be more than ${DEFAULT_CONFIG.feedback_message_max_length} characters`,
+        `Feedback message length should be between ${CHAR_SIZE_LIMIT.FEEDBACK_MESSAGE.MIN} to ${CHAR_SIZE_LIMIT.FEEDBACK_MESSAGE.MAX} characters`,
         400
       )
     );
@@ -153,7 +170,7 @@ export const toggleInboxStatus = cae(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: `Inbox ${updatedInboxStatus}`,
-    data: {is_inbox_enabled: !initialInboxStatus}
+    data: { is_inbox_enabled: !initialInboxStatus }
   });
 });
 
@@ -194,13 +211,20 @@ export const getUserDetailsByUsername = cae(async (req, res, next) => {
     return res.status(200).json({
       success: true,
       message: `${user.name}'s inbox is full. To allow new messages, request that some old ones be deleted.`,
-      data: { ...user.toJSON(), is_inbox_full: isInboxFull }
+      data: {
+        ...user.toJSON(),
+        is_inbox_full: isInboxFull
+      }
     });
   }
 
   res.status(200).json({
     success: true,
     message: 'Successfully fetched user details',
-    data: { ...user.toJSON(), is_inbox_full: isInboxFull }
+    data: {
+      ...user.toJSON(),
+      is_inbox_full: isInboxFull,
+      message_type: MESSAGE_TYPE.ANONYMOUS_MESSAGE
+    }
   });
 });
