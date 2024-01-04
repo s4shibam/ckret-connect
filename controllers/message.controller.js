@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { catchAsyncError as cae } from '../middleware/catch-async-error.js';
 import Message from '../models/message.model.js';
+import Stat from '../models/stat.model.js';
 import User from '../models/user.model.js';
 import CustomError from '../utils/custom-error.js';
 
@@ -57,6 +58,13 @@ export const submitMessage = cae(async (req, res, next) => {
 
   user.inbox_current_size += 1;
   await user.save();
+
+  // Store message count stats
+  await Stat.findOneAndUpdate(
+    {},
+    { $inc: { total_messages_count: 1 } },
+    { upsert: true }
+  );
 
   res.status(200).json({
     success: true,

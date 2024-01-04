@@ -5,6 +5,7 @@ import {
   MESSAGE_TYPE
 } from '../constants/index.js';
 import { catchAsyncError as cae } from '../middleware/catch-async-error.js';
+import Stat from '../models/stat.model.js';
 import User from '../models/user.model.js';
 import CustomError from '../utils/custom-error.js';
 import {
@@ -43,6 +44,14 @@ export const googleProviderSignIn = cae(async (req, res, next) => {
 
   newUser.username = newUser._id.toString();
   await newUser.save();
+
+  await Stat.findOneAndUpdate(
+    {},
+    {
+      $addToSet: { registered_users: email }
+    },
+    { upsert: true }
+  );
 
   res.status(201).json({
     success: true,
