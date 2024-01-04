@@ -70,7 +70,9 @@ ROUTE: message/all
 METHOD: GET
 */
 export const getAllMessages = cae(async (req, res, next) => {
-  const messages = await Message.find({ recipient: req?.user?._id });
+  const messages = await Message.find({ recipient: req?.user?._id }).sort({
+    createdAt: -1
+  });
 
   res.status(200).json({
     success: true,
