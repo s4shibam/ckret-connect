@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { DEFAULT_CONFIG } from '../constants/index.js';
 
 export const generateToken = ({ obj, expiresIn = '1d' }) => {
   return jwt.sign(obj, process.env.JWT_SECRET, {
@@ -10,7 +11,7 @@ export const verifyToken = ({ token }) => {
   return jwt.verify(token, process.env.JWT_SECRET);
 };
 
-export const createUserObjectForSessionToken = (user) => {
+export const createSigninResponseObj = (user) => {
   const {
     _id,
     name,
@@ -23,7 +24,7 @@ export const createUserObjectForSessionToken = (user) => {
     username
   } = user;
 
-  const formattedUserObj = {
+  const responseObj = {
     _id,
     name,
     email,
@@ -34,7 +35,15 @@ export const createUserObjectForSessionToken = (user) => {
     is_inbox_enabled,
     username
   };
-  return formattedUserObj;
+
+  const token = generateToken({
+    obj: { _id, email },
+    expiresIn: DEFAULT_CONFIG.signin_token_expiry
+  });
+
+  responseObj.token = token;
+
+  return responseObj;
 };
 
 export const isValidUsername = (username) => {

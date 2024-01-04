@@ -3,11 +3,7 @@ import { AUTH_PROVIDER, DEFAULT_CONFIG } from '../constants/index.js';
 import { catchAsyncError as cae } from '../middleware/catch-async-error.js';
 import User from '../models/user.model.js';
 import CustomError from '../utils/custom-error.js';
-import {
-  createUserObjectForSessionToken,
-  generateToken,
-  isValidUsername
-} from '../utils/index.js';
+import { createSigninResponseObj, isValidUsername } from '../utils/index.js';
 
 /*
 USE: Create new user and return details or return existing user  
@@ -24,14 +20,10 @@ export const googleProviderSignIn = cae(async (req, res, next) => {
   const userDoc = await User.findOne({ email });
 
   if (userDoc) {
-    const token = generateToken({
-      obj: createUserObjectForSessionToken(userDoc),
-      expiresIn: DEFAULT_CONFIG.signin_token_expiry
-    });
     return res.status(201).json({
       success: true,
       message: 'Signed in successfully',
-      data: { token }
+      data: createSigninResponseObj(userDoc)
     });
   }
 
@@ -44,15 +36,10 @@ export const googleProviderSignIn = cae(async (req, res, next) => {
   newUser.username = newUser._id.toString();
   await newUser.save();
 
-  const token = generateToken({
-    obj: createUserObjectForSessionToken(newUser),
-    expiresIn: DEFAULT_CONFIG.signin_token_expiry
-  });
-
   res.status(201).json({
     success: true,
     message: 'Signed in successfully',
-    data: { token }
+    data: createSigninResponseObj(newUser)
   });
 });
 
