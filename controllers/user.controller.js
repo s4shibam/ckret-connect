@@ -61,7 +61,8 @@ export const updateName = cae(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: 'Successfully updated your name'
+    message: 'Successfully updated your name',
+    data: { name }
   });
 });
 
@@ -97,7 +98,8 @@ export const updateUsername = cae(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: 'Username updated successfully'
+    message: 'Username updated successfully',
+    data: { username }
   });
 });
 
@@ -128,7 +130,8 @@ export const updateFeedbackMessage = cae(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: 'Successfully updated your feedback message'
+    message: 'Successfully updated your feedback message',
+    data: { feedback_message: feedbackMessage }
   });
 });
 
@@ -149,7 +152,8 @@ export const toggleInboxStatus = cae(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: `Inbox ${updatedInboxStatus}`
+    message: `Inbox ${updatedInboxStatus}`,
+    data: {is_inbox_enabled: !initialInboxStatus}
   });
 });
 
