@@ -5,7 +5,8 @@ const schema = new Schema({
     type: [String]
   },
   total_messages_count: {
-    type: Number
+    type: Number,
+    default: 0
   }
 });
 
