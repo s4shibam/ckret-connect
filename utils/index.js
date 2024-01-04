@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { DEFAULT_CONFIG } from '../constants/index.js';
+import { CHAR_SIZE_LIMIT, DEFAULT_CONFIG } from '../constants/index.js';
 
 export const generateToken = ({ obj, expiresIn = '1d' }) => {
   return jwt.sign(obj, process.env.JWT_SECRET, {
@@ -58,9 +58,12 @@ export const isValidUsername = (username) => {
   */
   const regex = /^[a-zA-Z0-9_\.]+$/;
 
-  const isValidLength = username.length >= 5 && username.length <= 20;
-
   const isValidPattern = regex.test(username);
 
-  return isValidLength && isValidPattern;
+  return !isInvalidLength(username, CHAR_SIZE_LIMIT.USERNAME) && isValidPattern;
+};
+
+export const isInvalidLength = (text, LIMIT) => {
+  const trimmedText = text.trim();
+  return trimmedText.length < LIMIT.MIN || trimmedText.length > LIMIT.MAX;
 };
