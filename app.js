@@ -4,6 +4,7 @@ import express, { json } from 'express';
 import morgan from 'morgan';
 import { errorHandler } from './middleware/error.js';
 import messageRoutes from './routes/message.route.js';
+import statRoutes from './routes/stat.route.js';
 import userRoutes from './routes/user.route.js';
 import CustomError from './utils/custom-error.js';
 import { connectToDB } from './utils/db-connection.js';
@@ -38,6 +39,7 @@ app.get('/api/v1', (_, res) =>
 
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/message', messageRoutes);
+app.use('/api/v1/stat', statRoutes);
 
 // Handle unknown routes
 app.all('*', (req, _, next) => {
