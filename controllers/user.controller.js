@@ -177,24 +177,26 @@ export const getUserDetailsByUsername = cae(async (req, res, next) => {
     return next(new CustomError('User not found', 404));
   }
 
-  if (user.inbox_current_size === user.inbox_max_size) {
-    return next(
-      new CustomError(
-        `${user.name}'s inbox is full. To allow new messages, request that some old ones be deleted.`,
-        400
-      )
-    );
-  }
+  const isInboxFull = user.inbox_current_size === user.inbox_max_size;
 
   user.email = undefined;
   user.auth_provider = undefined;
   user.inbox_current_size = undefined;
   user.inbox_max_size = undefined;
+  user.is_inbox_enabled = undefined;
   user.__v = undefined;
+
+  if (isInboxFull) {
+    return res.status(200).json({
+      success: true,
+      message: `${user.name}'s inbox is full. To allow new messages, request that some old ones be deleted.`,
+      data: { ...user.toJSON(), is_inbox_full: isInboxFull }
+    });
+  }
 
   res.status(200).json({
     success: true,
     message: 'Successfully fetched user details',
-    data: user
+    data: { ...user.toJSON(), is_inbox_full: isInboxFull }
   });
 });
