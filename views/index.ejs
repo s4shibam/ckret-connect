@@ -57,16 +57,21 @@
         margin: 0 auto;
         width: fit-content;
         display: flex;
-        flex-direction: column;
         justify-items: center;
         align-items: center;
         gap: 4px;
         user-select: none;
       }
       .logo {
-        height: 100px;
-        width: 100px;
+        height: 60px;
+        width: 60px;
         margin: auto auto;
+      }
+      .logo-text {
+        margin: auto auto;
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
       }
     </style>
   </head>
@@ -74,7 +79,7 @@
     <div class="container">
       <a class="logo-wrapper" href="<%= ckretURL %>" target="_blank">
         <img src="./logo.svg" class="logo" />
-        <h1 style="margin: auto auto">Ckret</h1>
+        <h1 class="logo-text">Ckret.</h1>
       </a>
 
       <h2 style="margin-bottom: 0">Ckret Connect</h2>
