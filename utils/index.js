@@ -1,6 +1,11 @@
 import jwt from 'jsonwebtoken';
 import { CHAR_SIZE_LIMIT, DEFAULT_CONFIG } from '../constants/index.js';
 
+export const getDatabaseUrl = () => {
+  const queries = 'retryWrites=true&w=majority';
+  return `${process.env.DB_CONNECTION_STRING}/${process.env.DB_NAME}?${queries}`;
+};
+
 export const generateToken = ({ obj, expiresIn = '1d' }) => {
   return jwt.sign(obj, process.env.JWT_SECRET, {
     expiresIn
