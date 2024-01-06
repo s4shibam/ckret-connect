@@ -2,6 +2,7 @@ import cors from 'cors';
 import { config } from 'dotenv';
 import express, { json } from 'express';
 import morgan from 'morgan';
+import { homePage } from './controllers/home.controller.js';
 import { errorHandler } from './middleware/error.js';
 import messageRoutes from './routes/message.route.js';
 import statRoutes from './routes/stat.route.js';
@@ -22,19 +23,14 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.static('public'));
 
-// Set up view engine
-app.set('view engine', 'ejs');
+// Ckret Connect Home Route
+app.get('/', (_, res) =>
+  res.status(200).send(homePage({ heading: 'Ckret Connect' }))
+);
 
-// API Base Route
-app.get('/', (_, res) => {
-  res.render('index', {
-    ckretURL: process.env.CKRET_URL
-  });
-});
-
-// API v1 Routes
+// API v1 Home Route
 app.get('/api/v1', (_, res) =>
-  res.status(200).send('Ckret Backend Server -  API v1')
+  res.status(200).send(homePage({ heading: 'Ckret Connect - API v1' }))
 );
 
 app.use('/api/v1/user', userRoutes);
