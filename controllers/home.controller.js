@@ -12,7 +12,7 @@ export const homePage = ({ heading }) => {
       href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" type="image/x-icon" href="/logo.svg" />
+    <link rel="icon" type="image/x-icon" href="${process.env.CKRET_LOGO_URL}" />
     <title>Ckret Connect</title>
     <style type="text/css">
       body {
