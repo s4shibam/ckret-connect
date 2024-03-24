@@ -1,56 +1,61 @@
-## Ckret Connect - Anonymous Messaging Platform (Backend)
+<p align="center">
+    <a href="https://connect.ckret.xyz">
+        <img alt="ckret-connect" width="100" src="public/logo-animated.svg">
+    </a>
+</p>
 
-<br/>
+<div align="center">
+    <h1>Ckret Connect</h1>
+    <p>Anonymous Messaging Platform - Backend</p>
+</div>
 
-**Details**
+<p align="center">
+    <img src="https://img.shields.io/github/languages/code-size/s4shibam/ckret-connect?style=flat-square" alt="Code Size">
+    <img src="https://img.shields.io/github/license/s4shibam/ckret-connect?style=flat-square" alt="License">
+    <img src="https://img.shields.io/github/stars/s4shibam/ckret-connect?style=flat-square&logo=github" alt="Stars">
+</p>
 
-`To be added`
+<br />
 
-<br/>
+## ⚡ Introduction
 
-**Features**
+Ckret Connect is the backend service for the [Ckret](https://ckret.xyz) App [(GitHub)](https://github.com/s4shibam/ckret).
+Ckret is an anonymous messaging platform, where users can send and receive messages anonymously via link.
 
-`To be added`
+## ✨ Features
+  
+- Exchange messages with users anonymously
+- Create account with gmail to get messages
+- Customizable username, inbox status and feedback message
+- Send secret messages using ckret link without even creating account
 
-<br/>
+## ⚙️ Tech Stack
+  
+- Node JS
+- Express JS
+- MongoDB
 
-**New Features**
 
-`To be added`
+## 📦 Other Libraries and Tools
+  
+- Mongoose
+- JSON Web Token
+- Winston
+- ES Lint
 
-<br/>
+## 🎯 Goals
 
-**Live Link**
+- [x] Get cozy with `Node JS` for building strong backend systems. 
+- [x] Explore `Express JS` and its key elements: Router, Controller, and Middleware 
+- [x] Dive into `MongoDB` and ace querying techniques with `Mongoose` ODM
+- [x] Create a custom error handler for smooth and consistent error management across all services
 
-`To be added`
+## 🖼️ Screenshots
 
-<br/>
+![Screenshot 1](./readme_assets/screenshot_1.png)
 
-**Tech Stack**
 
-`To be added`
-
-<br/>
-
-**Additional Libraries**
-
-`To be added`
-
-<br/>
-
-**Developer Dependencies**
-
-`To be added`
-
-<br/>
-
-**Demo Video**
-
-`To be added`
-
-<br/>
-
-**Follow Me**
+## 👋🏻 Contact
 
 [![Linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/s4shibam)
-[![Twitter](https://img.shields.io/badge/Twitter-1877F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/s4shibam)
+[![Twitter](https://img.shields.io/badge/Twitter-00ACEE?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/intent/follow?screen_name=s4shibam)
