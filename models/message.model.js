@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose';
-import { MESSAGE_TYPE } from '../constants/index.js';
+import { Schema, model } from 'mongoose'
+import { MESSAGE_TYPE } from '../constants/index.js'
 
 const schema = new Schema(
   {
@@ -18,6 +18,6 @@ const schema = new Schema(
     }
   },
   { timestamps: true }
-);
+)
 
-export default model('message', schema);
+export default model('message', schema)

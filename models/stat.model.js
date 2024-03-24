@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose'
 
 const schema = new Schema({
   registered_users: {
@@ -8,6 +8,6 @@ const schema = new Schema({
     type: Number,
     default: 0
   }
-});
+})
 
-export default model('stat', schema);
+export default model('stat', schema)

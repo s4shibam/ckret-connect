@@ -1,6 +1,6 @@
-import { Schema, model } from 'mongoose';
-import validator from 'validator';
-import { DEFAULT_CONFIG } from '../constants/index.js';
+import { Schema, model } from 'mongoose'
+import validator from 'validator'
+import { DEFAULT_CONFIG } from '../constants/index.js'
 
 const schema = new Schema(
   {
@@ -44,6 +44,6 @@ const schema = new Schema(
     }
   },
   { timestamps: true }
-);
+)
 
-export default model('user', schema);
+export default model('user', schema)

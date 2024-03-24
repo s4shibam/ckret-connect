@@ -1,6 +1,6 @@
 export const AUTH_PROVIDER = {
   google: 'google'
-};
+}
 
 export const DEFAULT_CONFIG = {
   signin_token_expiry: '30d',
@@ -9,7 +9,7 @@ export const DEFAULT_CONFIG = {
   is_inbox_enabled: true,
   message_max_length: 150,
   feedback_message: 'Thank You'
-};
+}
 
 export const CHAR_SIZE_LIMIT = {
   NAME: {
@@ -24,11 +24,11 @@ export const CHAR_SIZE_LIMIT = {
     MIN: 1,
     MAX: 100
   }
-};
+}
 
 export const MESSAGE_TYPE = {
   ANONYMOUS_MESSAGE: 'AM'
-};
+}
 
 export const HTTP_STATUS_CODE_MAP = {
   // 2xx Success
@@ -50,4 +50,4 @@ export const HTTP_STATUS_CODE_MAP = {
   502: 'Bad Gateway',
   503: 'Service Unavailable',
   504: 'Gateway Timeout'
-};
+}

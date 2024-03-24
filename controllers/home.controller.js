@@ -1,5 +1,4 @@
 export const homePage = ({ heading }) => {
-  
   const html = `
 <!DOCTYPE html>
 <html lang="en">
@@ -95,6 +94,6 @@ export const homePage = ({ heading }) => {
     </div>
   </body>
 </html>
-    `;
-  return html;
-};
+    `
+  return html
+}
