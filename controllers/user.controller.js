@@ -8,6 +8,7 @@ import { catchAsyncError as cae } from '../middleware/catch-async-error.js'
 import Stat from '../models/stat.model.js'
 import User from '../models/user.model.js'
 import CustomError from '../utils/custom-error.js'
+import { googleClient } from '../utils/google-client.js'
 import {
   createSigninResponseObj,
   isInvalidLength,
@@ -20,45 +21,62 @@ ROUTE: user/auth/google-signin
 METHOD: POST
 */
 export const googleProviderSignIn = cae(async (req, res, next) => {
-  const { name, email } = req?.body || {}
+  const { token } = req?.body || {};
 
-  if (!email || !name) {
-    return next(new CustomError('Insufficient details', 400))
+  if (!token) {
+    return next(new CustomError('Authentication token is required', 400));
   }
 
-  const userDoc = await User.findOne({ email })
+  try {
+    // Verify the token
+    const ticket = await googleClient.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID
+    });
 
-  if (userDoc) {
-    return res.status(201).json({
+    // Get payload from verified token
+    const { email, name } = ticket.getPayload();
+
+    if (!email || !name) {
+      return next(new CustomError('Invalid token payload', 400));
+    }
+
+    const userDoc = await User.findOne({ email });
+
+    if (userDoc) {
+      return res.status(201).json({
+        success: true,
+        message: 'Signed in successfully',
+        data: createSigninResponseObj(userDoc)
+      });
+    }
+
+    const newUser = await User.create({
+      name,
+      email,
+      auth_provider: AUTH_PROVIDER.google
+    });
+
+    newUser.username = newUser._id.toString();
+    await newUser.save();
+
+    await Stat.findOneAndUpdate(
+      {},
+      {
+        $addToSet: { registered_users: email }
+      },
+      { upsert: true }
+    );
+
+    res.status(201).json({
       success: true,
       message: 'Signed in successfully',
-      data: createSigninResponseObj(userDoc)
-    })
+      data: createSigninResponseObj(newUser)
+    });
+  } catch (error) {
+    return next(new CustomError('Invalid authentication token', 401));
   }
-
-  const newUser = await User.create({
-    name,
-    email,
-    auth_provider: AUTH_PROVIDER.google
-  })
-
-  newUser.username = newUser._id.toString()
-  await newUser.save()
-
-  await Stat.findOneAndUpdate(
-    {},
-    {
-      $addToSet: { registered_users: email }
-    },
-    { upsert: true }
-  )
-
-  res.status(201).json({
-    success: true,
-    message: 'Signed in successfully',
-    data: createSigninResponseObj(newUser)
-  })
-})
+});
 
 /*
 USE: Update name
