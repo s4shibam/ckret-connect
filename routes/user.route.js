@@ -6,6 +6,7 @@ import {
   anonymousSignUp,
   getUserDetailsByUsername,
   googleProviderSignIn,
+  linkGoogleAccount,
   toggleInboxStatus,
   updateFeedbackMessage,
   updateName,
@@ -19,6 +20,8 @@ router.post('/auth/anonymous-signup', anonymousSignUp)
 router.post('/auth/anonymous-signin', anonymousSignIn)
 
 router.post('/auth/google-signin', googleProviderSignIn)
+
+router.post('/auth/link-google', isAuthenticated, linkGoogleAccount)
 
 router.put('/name', isAuthenticated, updateName)
 

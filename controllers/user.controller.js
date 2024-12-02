@@ -157,6 +157,75 @@ export const googleProviderSignIn = cae(async (req, res, next) => {
 })
 
 /*
+USE: Link anonymous account with Google account
+ROUTE: user/auth/link-google
+METHOD: POST
+*/
+export const linkGoogleAccount = cae(async (req, res, next) => {
+  const { token } = req?.body || {}
+  const { user } = req
+
+  if (!token) {
+    return next(new CustomError('Google authentication token is required', 400))
+  }
+
+  if (user.auth_provider !== AUTH_PROVIDER.anonymous) {
+    return next(
+      new CustomError('Only anonymous accounts can be linked to Google', 400)
+    )
+  }
+
+  const ticket = await googleClient.verifyIdToken({
+    idToken: token,
+    audience: process.env.GOOGLE_CLIENT_ID
+  })
+
+  const { email, name } = ticket.getPayload()
+
+  if (!email || !name) {
+    return next(new CustomError('Invalid token payload', 400))
+  }
+
+  const existingGoogleUser = await User.findOne({ email })
+  if (existingGoogleUser) {
+    return next(
+      new CustomError(
+        'This Google account is already linked to another user',
+        400
+      )
+    )
+  }
+
+  user.email = email
+  user.name = name
+  user.auth_provider = AUTH_PROVIDER.google
+
+  user.password = undefined
+
+  await user.save()
+
+  await Stat.findOneAndUpdate(
+    {},
+    {
+      $addToSet: { registered_users: email }
+    },
+    { upsert: true }
+  )
+
+  await Stat.findOneAndUpdate(
+    {},
+    { $inc: { anonymous_users_count: -1 } },
+    { upsert: true }
+  )
+
+  res.status(200).json({
+    success: true,
+    message: 'Successfully linked Google account',
+    data: createSigninResponseObj(user)
+  })
+})
+
+/*
 USE: Update name
 ROUTE: user/name
 METHOD: PUT
