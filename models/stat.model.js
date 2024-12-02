@@ -4,6 +4,10 @@ const schema = new Schema({
   registered_users: {
     type: [String]
   },
+  anonymous_users_count: {
+    type: Number,
+    default: 0
+  },
   total_messages_count: {
     type: Number,
     default: 0

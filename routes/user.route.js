@@ -2,6 +2,8 @@
 
 import { Router } from 'express'
 import {
+  anonymousSignIn,
+  anonymousSignUp,
   getUserDetailsByUsername,
   googleProviderSignIn,
   toggleInboxStatus,
@@ -11,6 +13,10 @@ import {
 } from '../controllers/user.controller.js'
 import { isAuthenticated } from '../middleware/authenticate.js'
 const router = Router()
+
+router.post('/auth/anonymous-signup', anonymousSignUp)
+
+router.post('/auth/anonymous-signin', anonymousSignIn)
 
 router.post('/auth/google-signin', googleProviderSignIn)
 
