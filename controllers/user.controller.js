@@ -16,67 +16,214 @@ import {
 } from '../utils/index.js'
 
 /*
+USE: Create new user with username and password
+ROUTE: user/auth/anonymous-signup
+METHOD: POST
+*/
+export const anonymousSignUp = cae(async (req, res, next) => {
+  const { username, password } = req?.body || {}
+
+  if (!username || !password) {
+    return next(new CustomError('Username and password are required', 400))
+  }
+
+  if (!isValidUsername(username)) {
+    return next(new CustomError('Invalid username format', 400))
+  }
+
+  if (isInvalidLength(password, CHAR_SIZE_LIMIT.PASSWORD)) {
+    return next(
+      new CustomError(
+        `Password length should be between ${CHAR_SIZE_LIMIT.PASSWORD.MIN} to ${CHAR_SIZE_LIMIT.PASSWORD.MAX} characters`,
+        400
+      )
+    )
+  }
+
+  const existingUser = await User.findOne({ username })
+  if (existingUser) {
+    return next(new CustomError('Username already taken', 400))
+  }
+
+  const newUser = await User.create({
+    name: username,
+    username,
+    password,
+    email: `${username}@anonymous.user`,
+    auth_provider: AUTH_PROVIDER.anonymous
+  })
+
+  await Stat.findOneAndUpdate(
+    {},
+    { $inc: { anonymous_users_count: 1 } },
+    { upsert: true }
+  )
+
+  res.status(201).json({
+    success: true,
+    message: 'Account created successfully',
+    data: createSigninResponseObj(newUser)
+  })
+})
+
+/*
+USE: Sign in existing anonymous user
+ROUTE: user/auth/anonymous-signin
+METHOD: POST
+*/
+export const anonymousSignIn = cae(async (req, res, next) => {
+  const { username, password } = req?.body || {}
+
+  if (!username || !password) {
+    return next(new CustomError('Username and password are required', 400))
+  }
+
+  const user = await User.findOne({
+    username,
+    auth_provider: AUTH_PROVIDER.anonymous
+  }).select('+password')
+
+  if (!user) {
+    return next(new CustomError('Invalid credentials', 401))
+  }
+
+  const isPasswordValid = await user.comparePassword(password)
+  if (!isPasswordValid) {
+    return next(new CustomError('Invalid credentials', 401))
+  }
+
+  res.status(200).json({
+    success: true,
+    message: 'Signed in successfully',
+    data: createSigninResponseObj(user)
+  })
+})
+
+/*
 USE: Create new user and return details or return existing user  
 ROUTE: user/auth/google-signin
 METHOD: POST
 */
 export const googleProviderSignIn = cae(async (req, res, next) => {
-  const { token } = req?.body || {};
+  const { token } = req?.body || {}
 
   if (!token) {
-    return next(new CustomError('Authentication token is required', 400));
+    return next(new CustomError('Authentication token is required', 400))
   }
 
-  try {
-    // Verify the token
-    const ticket = await googleClient.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID
-    });
+  const ticket = await googleClient.verifyIdToken({
+    idToken: token,
+    audience: process.env.GOOGLE_CLIENT_ID
+  })
 
-    // Get payload from verified token
-    const { email, name } = ticket.getPayload();
+  const { email, name } = ticket.getPayload()
 
-    if (!email || !name) {
-      return next(new CustomError('Invalid token payload', 400));
-    }
+  if (!email || !name) {
+    return next(new CustomError('Invalid token payload', 400))
+  }
 
-    const userDoc = await User.findOne({ email });
+  const userDoc = await User.findOne({ email })
 
-    if (userDoc) {
-      return res.status(201).json({
-        success: true,
-        message: 'Signed in successfully',
-        data: createSigninResponseObj(userDoc)
-      });
-    }
-
-    const newUser = await User.create({
-      name,
-      email,
-      auth_provider: AUTH_PROVIDER.google
-    });
-
-    newUser.username = newUser._id.toString();
-    await newUser.save();
-
-    await Stat.findOneAndUpdate(
-      {},
-      {
-        $addToSet: { registered_users: email }
-      },
-      { upsert: true }
-    );
-
-    res.status(201).json({
+  if (userDoc) {
+    return res.status(201).json({
       success: true,
       message: 'Signed in successfully',
-      data: createSigninResponseObj(newUser)
-    });
-  } catch (error) {
-    return next(new CustomError('Invalid authentication token', 401));
+      data: createSigninResponseObj(userDoc)
+    })
   }
-});
+
+  const newUser = await User.create({
+    name,
+    email,
+    auth_provider: AUTH_PROVIDER.google
+  })
+
+  newUser.username = newUser._id.toString()
+  await newUser.save()
+
+  await Stat.findOneAndUpdate(
+    {},
+    {
+      $addToSet: { registered_users: email }
+    },
+    { upsert: true }
+  )
+
+  res.status(201).json({
+    success: true,
+    message: 'Signed in successfully',
+    data: createSigninResponseObj(newUser)
+  })
+})
+
+/*
+USE: Link anonymous account with Google account
+ROUTE: user/auth/link-google
+METHOD: POST
+*/
+export const linkGoogleAccount = cae(async (req, res, next) => {
+  const { token } = req?.body || {}
+  const { user } = req
+
+  if (!token) {
+    return next(new CustomError('Google authentication token is required', 400))
+  }
+
+  if (user.auth_provider !== AUTH_PROVIDER.anonymous) {
+    return next(
+      new CustomError('Only anonymous accounts can be linked to Google', 400)
+    )
+  }
+
+  const ticket = await googleClient.verifyIdToken({
+    idToken: token,
+    audience: process.env.GOOGLE_CLIENT_ID
+  })
+
+  const { email, name } = ticket.getPayload()
+
+  if (!email || !name) {
+    return next(new CustomError('Invalid token payload', 400))
+  }
+
+  const existingGoogleUser = await User.findOne({ email })
+  if (existingGoogleUser) {
+    return next(
+      new CustomError(
+        'This Google account is already linked to another user',
+        400
+      )
+    )
+  }
+
+  user.email = email
+  user.name = name
+  user.auth_provider = AUTH_PROVIDER.google
+
+  user.password = undefined
+
+  await user.save()
+
+  await Stat.findOneAndUpdate(
+    {},
+    {
+      $addToSet: { registered_users: email }
+    },
+    { upsert: true }
+  )
+
+  await Stat.findOneAndUpdate(
+    {},
+    { $inc: { anonymous_users_count: -1 } },
+    { upsert: true }
+  )
+
+  res.status(200).json({
+    success: true,
+    message: 'Successfully linked Google account',
+    data: createSigninResponseObj(user)
+  })
+})
 
 /*
 USE: Update name

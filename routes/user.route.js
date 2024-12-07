@@ -2,8 +2,11 @@
 
 import { Router } from 'express'
 import {
+  anonymousSignIn,
+  anonymousSignUp,
   getUserDetailsByUsername,
   googleProviderSignIn,
+  linkGoogleAccount,
   toggleInboxStatus,
   updateFeedbackMessage,
   updateName,
@@ -12,7 +15,13 @@ import {
 import { isAuthenticated } from '../middleware/authenticate.js'
 const router = Router()
 
+router.post('/auth/anonymous-signup', anonymousSignUp)
+
+router.post('/auth/anonymous-signin', anonymousSignIn)
+
 router.post('/auth/google-signin', googleProviderSignIn)
+
+router.post('/auth/link-google', isAuthenticated, linkGoogleAccount)
 
 router.put('/name', isAuthenticated, updateName)
 

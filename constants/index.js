@@ -1,5 +1,6 @@
 export const AUTH_PROVIDER = {
-  google: 'google'
+  google: 'google',
+  anonymous: 'anonymous'
 }
 
 export const DEFAULT_CONFIG = {
@@ -23,6 +24,10 @@ export const CHAR_SIZE_LIMIT = {
   FEEDBACK_MESSAGE: {
     MIN: 1,
     MAX: 100
+  },
+  PASSWORD: {
+    MIN: 8,
+    MAX: 32
   }
 }
 
