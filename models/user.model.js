@@ -33,6 +33,7 @@ const schema = new Schema(
     },
     auth_provider: {
       type: String,
+      enum: Object.values(AUTH_PROVIDER),
       required: true
     },
     message_max_length: {
