@@ -1,3 +1,4 @@
+import colors from 'colors'
 import mongoose from 'mongoose'
 import { getDatabaseUrl } from './index.js'
 
@@ -11,9 +12,11 @@ export const connectToDB = async () => {
 
     const clusterName = srvHost?.split('.mongodb.net')?.[0]
 
-    console.log('Database Connected'.cyan)
-    console.log(`DB Name: ${dbName}`.gray)
-    console.log(`Cluster Name: ${clusterName}`.gray)
+    console.log(
+      colors.cyan(
+        `Database Connected to "${dbName}" on cluster "${clusterName}"`
+      )
+    )
   } catch (error) {
     console.log(`DB connection error: ${error}`.red)
   }
