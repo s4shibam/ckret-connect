@@ -1,3 +1,5 @@
+import { ENV } from '../constants/index.js'
+
 export const homePage = ({ heading }) => {
   const html = `
 <!DOCTYPE html>
@@ -11,7 +13,7 @@ export const homePage = ({ heading }) => {
       href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" type="image/x-icon" href="${process.env.CKRET_LOGO_URL}" />
+    <link rel="icon" type="image/x-icon" href="${ENV.ckret_logo_url}" />
     <title>Ckret Connect</title>
     <style type="text/css">
       body {
@@ -79,8 +81,8 @@ export const homePage = ({ heading }) => {
   </head>
   <body>
     <div class="container">
-      <a class="logo-wrapper" href="${process.env.CKRET_URL}" target="_blank">
-        <img src="${process.env.CKRET_LOGO_URL}" class="logo" />
+      <a class="logo-wrapper" href="${ENV.ckret_url}" target="_blank">
+        <img src="${ENV.ckret_logo_url}" class="logo" />
         <h1 class="logo-text">Ckret.</h1>
       </a>
 

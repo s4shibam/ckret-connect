@@ -1,9 +1,13 @@
 import jwt from 'jsonwebtoken'
-import { CHAR_SIZE_LIMIT, DEFAULT_CONFIG } from '../constants/index.js'
+import { dirname } from 'path'
+import { fileURLToPath } from 'url'
+import { CHAR_SIZE_LIMIT, DEFAULT_CONFIG, ENV } from '../constants/index.js'
+
+export const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export const getDatabaseUrl = () => {
   const queries = 'retryWrites=true&w=majority'
-  return `${process.env.DB_CONNECTION_STRING}/${process.env.DB_NAME}?${queries}`
+  return `${ENV.db_connection_string}/${ENV.db_name}?${queries}`
 }
 
 export const generateToken = ({ obj, expiresIn = '1d' }) => {

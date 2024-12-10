@@ -1,3 +1,11 @@
+import { config } from 'dotenv'
+import path from 'path'
+import { __dirname } from '../utils/index.js'
+
+config({
+  path: path.resolve(__dirname, '../.env')
+})
+
 export const AUTH_PROVIDER = {
   google: 'google',
   anonymous: 'anonymous'
@@ -55,4 +63,15 @@ export const HTTP_STATUS_CODE_MAP = {
   502: 'Bad Gateway',
   503: 'Service Unavailable',
   504: 'Gateway Timeout'
+}
+
+export const ENV = {
+  port: process.env.PORT || 8000,
+  jwt_secret: process.env.JWT_SECRET || 'env-not-set',
+  google_client_id: process.env.GOOGLE_CLIENT_ID || 'env-not-set',
+  db_name: process.env.DB_NAME || 'env-not-set',
+  db_connection_string: process.env.DB_CONNECTION_STRING || 'env-not-set',
+  ckret_url: process.env.CKRET_URL || 'env-not-set',
+  ckret_logo_url: process.env.CKRET_LOGO_URL || 'env-not-set',
+  node_env: process.env.NODE_ENV || 'dev'
 }

@@ -1,14 +1,15 @@
 import colors from 'colors'
 import app from './app.js'
-
-// PORT
-const PORT = process.env.PORT || 8000
+import { ENV } from './constants/index.js'
 
 // Server
-app.listen(PORT, () => {
-  if (process.env.NODE_ENV === 'development') {
-    console.log(colors.magenta('Server is live on: http://localhost:%d'), PORT)
+app.listen(ENV.port, () => {
+  if (ENV.node_env === 'development') {
+    console.log(
+      colors.magenta('Server is live on: http://localhost:%d'),
+      ENV.port
+    )
   } else {
-    console.log(colors.magenta('Server is live on PORT: %d'), PORT)
+    console.log(colors.magenta('Server is live on PORT: %d'), ENV.port)
   }
 })

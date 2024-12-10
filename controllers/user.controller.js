@@ -1,7 +1,9 @@
 import mongoose from 'mongoose'
+
 import {
   AUTH_PROVIDER,
   CHAR_SIZE_LIMIT,
+  ENV,
   MESSAGE_TYPE
 } from '../constants/index.js'
 import { catchAsyncError as cae } from '../middleware/catch-async-error.js'
@@ -113,7 +115,7 @@ export const googleProviderSignIn = cae(async (req, res, next) => {
 
   const ticket = await googleClient.verifyIdToken({
     idToken: token,
-    audience: process.env.GOOGLE_CLIENT_ID
+    audience: ENV.google_client_id
   })
 
   const { email, name } = ticket.getPayload()
@@ -177,7 +179,7 @@ export const linkGoogleAccount = cae(async (req, res, next) => {
 
   const ticket = await googleClient.verifyIdToken({
     idToken: token,
-    audience: process.env.GOOGLE_CLIENT_ID
+    audience: ENV.google_client_id
   })
 
   const { email, name } = ticket.getPayload()
