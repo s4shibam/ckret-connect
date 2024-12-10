@@ -73,5 +73,6 @@ export const ENV = {
   db_connection_string: process.env.DB_CONNECTION_STRING || 'env-not-set',
   ckret_url: process.env.CKRET_URL || 'env-not-set',
   ckret_logo_url: process.env.CKRET_LOGO_URL || 'env-not-set',
+  encryption_key: process.env.ENCRYPTION_KEY || 'env-not-set',
   node_env: process.env.NODE_ENV || 'dev'
 }

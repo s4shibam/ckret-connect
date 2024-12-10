@@ -4,6 +4,7 @@ import Message from '../models/message.model.js'
 import Stat from '../models/stat.model.js'
 import User from '../models/user.model.js'
 import CustomError from '../utils/custom-error.js'
+import { encryptMessage } from '../utils/encryption.js'
 
 /*
 USE: Submit anonymous message
@@ -51,9 +52,12 @@ export const submitMessage = cae(async (req, res, next) => {
     )
   }
 
+  // Encrypt the message content before storing
+  const encryptedContent = encryptMessage(messageContent)
+
   await Message.create({
     recipient: user._id,
-    content: messageContent
+    encrypted_content: encryptedContent
   })
 
   user.inbox_current_size += 1
