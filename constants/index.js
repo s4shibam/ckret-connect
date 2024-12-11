@@ -17,7 +17,8 @@ export const DEFAULT_CONFIG = {
   inbox_max_size: 50,
   is_inbox_enabled: true,
   message_max_length: 150,
-  feedback_message: 'Thank You'
+  feedback_message: 'Thank You',
+  sketch_max_size: 25
 }
 
 export const CHAR_SIZE_LIMIT = {
@@ -40,7 +41,8 @@ export const CHAR_SIZE_LIMIT = {
 }
 
 export const MESSAGE_TYPE = {
-  ANONYMOUS_MESSAGE: 'AM'
+  ANONYMOUS_MESSAGE: 'AM',
+  ANONYMOUS_SKETCH: 'AS'
 }
 
 export const HTTP_STATUS_CODE_MAP = {
@@ -74,5 +76,9 @@ export const ENV = {
   ckret_url: process.env.CKRET_URL || 'env-not-set',
   ckret_logo_url: process.env.CKRET_LOGO_URL || 'env-not-set',
   encryption_key: process.env.ENCRYPTION_KEY || 'env-not-set',
-  node_env: process.env.NODE_ENV || 'dev'
+  node_env: process.env.NODE_ENV || 'dev',
+  cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'env-not-set',
+  cloudinary_api_key: process.env.CLOUDINARY_API_KEY || 'env-not-set',
+  cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET || 'env-not-set',
+  cloudinary_folder: process.env.CLOUDINARY_FOLDER || 'env-not-set'
 }
