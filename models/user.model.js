@@ -52,6 +52,10 @@ const schema = new Schema(
       type: Number,
       default: DEFAULT_CONFIG.inbox_max_size
     },
+    sketch_max_size: {
+      type: Number,
+      default: DEFAULT_CONFIG.sketch_max_size
+    },
     is_inbox_enabled: {
       type: Boolean,
       default: DEFAULT_CONFIG.is_inbox_enabled

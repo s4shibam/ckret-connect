@@ -11,6 +11,10 @@ const schema = new Schema({
   total_messages_count: {
     type: Number,
     default: 0
+  },
+  total_sketches_count: {
+    type: Number,
+    default: 0
   }
 })
 
