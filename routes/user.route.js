@@ -9,6 +9,7 @@ import {
   googleProviderSignIn,
   linkGoogleAccount,
   toggleInboxStatus,
+  updateAvatar,
   updateFeedbackMessage,
   updateName,
   updateUsername
@@ -27,6 +28,8 @@ router.post('/auth/link-google', isAuthenticated, linkGoogleAccount)
 router.put('/name', isAuthenticated, updateName)
 
 router.put('/username', isAuthenticated, updateUsername)
+
+router.put('/avatar', isAuthenticated, updateAvatar)
 
 router.put('/feedback-message', isAuthenticated, updateFeedbackMessage)
 

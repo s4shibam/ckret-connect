@@ -16,6 +16,7 @@ import { googleClient } from '../utils/google-client.js'
 import {
   createSigninResponseObj,
   isInvalidLength,
+  isValidAvatar,
   isValidUsername
 } from '../utils/index.js'
 
@@ -295,6 +296,33 @@ export const updateUsername = cae(async (req, res, next) => {
     success: true,
     message: 'Username updated successfully',
     data: { username }
+  })
+})
+
+/*
+USE: Update avatar emoji
+ROUTE: user/avatar
+METHOD: PUT
+*/
+export const updateAvatar = cae(async (req, res, next) => {
+  const { user } = req
+  const { avatar } = req?.body || {}
+
+  if (!avatar) {
+    return next(new CustomError('Avatar emoji is required', 400))
+  }
+
+  if (!isValidAvatar(avatar)) {
+    return next(new CustomError('Avatar must be a single emoji', 400))
+  }
+
+  user.avatar = avatar
+  await user.save()
+
+  res.status(200).json({
+    success: true,
+    message: 'Successfully updated your avatar',
+    data: { avatar }
   })
 })
 

@@ -13,6 +13,9 @@ const schema = new Schema(
       type: String,
       unique: true
     },
+    avatar: {
+      type: String
+    },
     email: {
       type: String,
       required: function () {

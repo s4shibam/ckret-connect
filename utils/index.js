@@ -31,7 +31,8 @@ export const createSigninResponseObj = (user) => {
     inbox_max_size,
     sketch_max_size,
     is_inbox_enabled,
-    username
+    username,
+    avatar
   } = user
 
   const responseObj = {
@@ -44,7 +45,8 @@ export const createSigninResponseObj = (user) => {
     inbox_max_size,
     sketch_max_size,
     is_inbox_enabled,
-    username
+    username,
+    avatar
   }
 
   const token = generateToken({
@@ -72,6 +74,12 @@ export const isValidUsername = (username) => {
   const isValidPattern = regex.test(username)
 
   return !isInvalidLength(username, CHAR_SIZE_LIMIT.USERNAME) && isValidPattern
+}
+
+export const isValidAvatar = (avatar) => {
+  const emojiRegex =
+    /^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]$/u
+  return avatar.length === 1 && emojiRegex.test(avatar)
 }
 
 export const isInvalidLength = (text, LIMIT) => {
