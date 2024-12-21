@@ -29,6 +29,7 @@ export const createSigninResponseObj = (user) => {
     message_max_length,
     feedback_message,
     inbox_max_size,
+    sketch_max_size,
     is_inbox_enabled,
     username
   } = user
@@ -41,6 +42,7 @@ export const createSigninResponseObj = (user) => {
     message_max_length,
     feedback_message,
     inbox_max_size,
+    sketch_max_size,
     is_inbox_enabled,
     username
   }
