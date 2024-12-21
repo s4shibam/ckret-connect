@@ -44,10 +44,6 @@ const schema = new Schema(
       type: String,
       default: DEFAULT_CONFIG.feedback_message
     },
-    inbox_current_size: {
-      type: Number,
-      default: 0
-    },
     inbox_max_size: {
       type: Number,
       default: DEFAULT_CONFIG.inbox_max_size

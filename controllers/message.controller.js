@@ -43,7 +43,12 @@ export const submitMessage = cae(async (req, res, next) => {
     )
   }
 
-  if (user.inbox_current_size === user.inbox_max_size) {
+  // Count current messages for the user
+  const currentMessageCount = await Message.countDocuments({
+    recipient: user._id
+  })
+
+  if (currentMessageCount >= user.inbox_max_size) {
     return next(
       new CustomError(
         `${user.name}'s inbox is full. To allow new messages, request that some old ones be deleted.`,
@@ -60,7 +65,6 @@ export const submitMessage = cae(async (req, res, next) => {
     encrypted_content: encryptedContent
   })
 
-  user.inbox_current_size += 1
   await user.save()
 
   // Store message count stats
@@ -110,7 +114,6 @@ export const deleteSingleMessage = cae(async (req, res, next) => {
     return next(new CustomError('Message not found', 404))
   }
 
-  user.inbox_current_size -= 1
   await user.save()
 
   res.status(200).json({
@@ -134,7 +137,6 @@ export const deleteAllMessages = cae(async (req, res, next) => {
     return next(new CustomError(`No messages found for ${name}`, 404))
   }
 
-  user.inbox_current_size = 0
   await user.save()
 
   res.status(200).json({

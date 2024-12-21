@@ -7,6 +7,7 @@ import {
   MESSAGE_TYPE
 } from '../constants/index.js'
 import { catchAsyncError as cae } from '../middleware/catch-async-error.js'
+import Message from '../models/message.model.js'
 import Stat from '../models/stat.model.js'
 import User from '../models/user.model.js'
 import CustomError from '../utils/custom-error.js'
@@ -374,11 +375,14 @@ export const getUserDetailsByUsername = cae(async (req, res, next) => {
     return next(new CustomError('User not found', 404))
   }
 
-  const isInboxFull = user.inbox_current_size === user.inbox_max_size
+  // Count current messages for the user
+  const currentMessageCount = await Message.countDocuments({
+    recipient: user._id
+  })
+  const isInboxFull = currentMessageCount >= user.inbox_max_size
 
   user.email = undefined
   user.auth_provider = undefined
-  user.inbox_current_size = undefined
   user.inbox_max_size = undefined
   user.is_inbox_enabled = undefined
   user.__v = undefined
