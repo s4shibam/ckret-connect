@@ -8,6 +8,7 @@ import {
 } from '../constants/index.js'
 import { catchAsyncError as cae } from '../middleware/catch-async-error.js'
 import Message from '../models/message.model.js'
+import Sketch from '../models/sketch.model.js'
 import Stat from '../models/stat.model.js'
 import User from '../models/user.model.js'
 import CustomError from '../utils/custom-error.js'
@@ -405,6 +406,58 @@ export const getUserDetailsByUsername = cae(async (req, res, next) => {
       ...user.toJSON(),
       is_inbox_full: isInboxFull,
       message_type: MESSAGE_TYPE.ANONYMOUS_MESSAGE
+    }
+  })
+})
+
+/*
+USE: Get user's public profile including public messages and sketches
+ROUTE: user/profile/:username
+METHOD: GET
+*/
+export const getUserProfileByUsername = cae(async (req, res, next) => {
+  const { username } = req?.params || {}
+
+  if (!username) {
+    return next(new CustomError('Username is required', 400))
+  }
+
+  const isMongoId = mongoose.Types.ObjectId.isValid(username)
+  const query = isMongoId ? { _id: username } : { username }
+
+  const user = await User.findOne(query)
+
+  if (!user || !user.is_inbox_enabled) {
+    return next(new CustomError('User not found', 404))
+  }
+
+  // Get public messages and sketches
+  const publicMessages = await Message.find({
+    recipient: user._id,
+    show_in_profile: true
+  }).sort({ updatedAt: -1 })
+
+  const publicSketches = await Sketch.find({
+    recipient: user._id,
+    show_in_profile: true
+  }).sort({ updatedAt: -1 })
+
+  // Remove sensitive information
+  user.email = undefined
+  user.auth_provider = undefined
+  user.inbox_max_size = undefined
+  user.sketch_max_size = undefined
+  user.is_inbox_enabled = undefined
+  user.message_max_length = undefined
+  user.__v = undefined
+
+  res.status(200).json({
+    success: true,
+    message: 'Successfully fetched user profile',
+    data: {
+      ...user.toJSON(),
+      messages: publicMessages,
+      sketches: publicSketches
     }
   })
 })

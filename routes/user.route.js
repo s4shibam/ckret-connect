@@ -5,6 +5,7 @@ import {
   anonymousSignIn,
   anonymousSignUp,
   getUserDetailsByUsername,
+  getUserProfileByUsername,
   googleProviderSignIn,
   linkGoogleAccount,
   toggleInboxStatus,
@@ -32,5 +33,7 @@ router.put('/feedback-message', isAuthenticated, updateFeedbackMessage)
 router.put('/inbox-status', isAuthenticated, toggleInboxStatus)
 
 router.get('/details/:username', getUserDetailsByUsername)
+
+router.get('/profile/:username', getUserProfileByUsername)
 
 export default router
