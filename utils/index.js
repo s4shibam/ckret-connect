@@ -79,7 +79,8 @@ export const isValidUsername = (username) => {
 export const isValidAvatar = (avatar) => {
   const emojiRegex =
     /^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]$/u
-  return avatar.length === 1 && emojiRegex.test(avatar)
+
+  return avatar.length > 0 && avatar.length <= 2 && emojiRegex.test(avatar)
 }
 
 export const isInvalidLength = (text, LIMIT) => {

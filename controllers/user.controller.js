@@ -307,7 +307,7 @@ METHOD: PUT
 export const updateAvatar = cae(async (req, res, next) => {
   const { user } = req
   const { avatar } = req?.body || {}
-
+  
   if (!avatar) {
     return next(new CustomError('Avatar emoji is required', 400))
   }

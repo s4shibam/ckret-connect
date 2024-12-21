@@ -37,10 +37,6 @@ export const CHAR_SIZE_LIMIT = {
   PASSWORD: {
     MIN: 8,
     MAX: 32
-  },
-  AVATAR: {
-    MIN: 1,
-    MAX: 1
   }
 }
 
