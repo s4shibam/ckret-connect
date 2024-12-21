@@ -16,6 +16,14 @@ const schema = new Schema(
     message_type: {
       type: String,
       default: MESSAGE_TYPE.ANONYMOUS_MESSAGE
+    },
+    encrypted_reply: {
+      type: String,
+      default: null
+    },
+    show_in_profile: {
+      type: Boolean,
+      default: false
     }
   },
   { 
@@ -25,9 +33,17 @@ const schema = new Schema(
         try {
           ret.content = decryptMessage(ret.encrypted_content)
           delete ret.encrypted_content
+
+          if (ret.encrypted_reply) {
+            ret.reply = decryptMessage(ret.encrypted_reply)
+            delete ret.encrypted_reply
+          }
         } catch (error) {
           console.error('Error decrypting message:', error)
           ret.content = 'Error: Could not decrypt message'
+          if (ret.encrypted_reply) {
+            ret.reply = 'Error: Could not decrypt reply'
+          }
         }
         return ret
       }

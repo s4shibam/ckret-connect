@@ -5,6 +5,7 @@ import Stat from '../models/stat.model.js'
 import User from '../models/user.model.js'
 import { uploadToCloudinary } from '../utils/cloudinary.js'
 import CustomError from '../utils/custom-error.js'
+import { encryptMessage } from '../utils/encryption.js'
 
 /*
 USE: Submit anonymous sketch
@@ -128,5 +129,76 @@ export const deleteAllSketches = cae(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: 'Successfully deleted all sketches'
+  })
+})
+
+/*
+USE: Add or update reply to a sketch
+ROUTE: sketch/reply/:sid
+METHOD: PUT
+*/
+export const replyToSketch = cae(async (req, res, next) => {
+  const { sid } = req?.params || {}
+  const { replyContent } = req?.body || {}
+
+  if (!replyContent) {
+    return next(new CustomError('Reply content is required', 400))
+  }
+
+  const sketch = await Sketch.findById(sid)
+
+  if (!sketch) {
+    return next(new CustomError('Sketch not found', 404))
+  }
+
+  // Check if user owns the sketch
+  if (sketch.recipient.toString() !== req.user._id.toString()) {
+    return next(new CustomError('Not authorized to reply to this sketch', 403))
+  }
+
+  // Encrypt the reply content
+  const encryptedReply = encryptMessage(replyContent)
+  sketch.encrypted_reply = encryptedReply
+  sketch.show_in_profile = true
+  await sketch.save()
+
+  res.status(200).json({
+    success: true,
+    message: 'Reply added successfully'
+  })
+})
+
+/*
+USE: Toggle sketch visibility in profile
+ROUTE: sketch/visibility/:sid
+METHOD: PUT
+*/
+export const toggleSketchVisibility = cae(async (req, res, next) => {
+  const { sid } = req?.params || {}
+
+  const sketch = await Sketch.findById(sid)
+
+  if (!sketch) {
+    return next(new CustomError('Sketch not found', 404))
+  }
+
+  // Check if user owns the sketch
+  if (sketch.recipient.toString() !== req.user._id.toString()) {
+    return next(new CustomError('Not authorized to modify this sketch', 403))
+  }
+
+  // If trying to make visible in profile but no reply exists
+  if (!sketch.show_in_profile && !sketch.encrypted_reply) {
+    return next(
+      new CustomError('Cannot show sketch in profile without a reply', 400)
+    )
+  }
+
+  sketch.show_in_profile = !sketch.show_in_profile
+  await sketch.save()
+
+  res.status(200).json({
+    success: true,
+    message: `Sketch ${sketch.show_in_profile ? 'will' : 'will not'} be shown in public profile`
   })
 })
