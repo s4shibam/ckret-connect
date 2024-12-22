@@ -307,7 +307,7 @@ METHOD: PUT
 export const updateAvatar = cae(async (req, res, next) => {
   const { user } = req
   const { avatar } = req?.body || {}
-  
+
   if (!avatar) {
     return next(new CustomError('Avatar emoji is required', 400))
   }
@@ -453,7 +453,9 @@ export const getUserProfileByUsername = cae(async (req, res, next) => {
   const isMongoId = mongoose.Types.ObjectId.isValid(username)
   const query = isMongoId ? { _id: username } : { username }
 
-  const user = await User.findOne(query)
+  const user = await User.findOne(query).select(
+    '_id name username avatar is_inbox_enabled'
+  )
 
   if (!user || !user.is_inbox_enabled) {
     return next(new CustomError('User not found', 404))
@@ -469,15 +471,6 @@ export const getUserProfileByUsername = cae(async (req, res, next) => {
     recipient: user._id,
     show_in_profile: true
   }).sort({ updatedAt: -1 })
-
-  // Remove sensitive information
-  user.email = undefined
-  user.auth_provider = undefined
-  user.inbox_max_size = undefined
-  user.sketch_max_size = undefined
-  user.is_inbox_enabled = undefined
-  user.message_max_length = undefined
-  user.__v = undefined
 
   res.status(200).json({
     success: true,
