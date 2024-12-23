@@ -20,34 +20,43 @@
 ## ⚡ Introduction
 
 Ckret Connect is the backend service for the [Ckret](https://ckret.xyz) App [(GitHub)](https://github.com/s4shibam/ckret).
-Ckret is an anonymous messaging platform, where users can send and receive messages anonymously via link.
+Ckret is a comprehensive anonymous interaction platform that enables users to exchange messages and sketches while maintaining privacy through secure encryption.
 
 ## ✨ Features
 
-- Exchange messages with users anonymously
-- Create account with gmail to get messages
-- Customizable username, inbox status and feedback message
-- Send secret messages using ckret link without even creating account
+- Anonymous messaging with end-to-end AES encryption
+- Creative sketch submissions with cloud storage
+- Google and anonymous authentication options
+- Personalized profile page with featured content
+- Secure message replies and feedback system
+- Customizable inbox settings and visibility controls
+- User-friendly interface with modern design
+- Flexible storage limits for messages and sketches
 
 ## ⚙️ Tech Stack
 
 - Node JS
 - Express JS
 - MongoDB
+- Cloudinary
 
 ## 📦 Other Libraries and Tools
 
 - Mongoose
 - JSON Web Token
-- Winston
-- ES Lint
+- CryptoJS
+- Multer
+- ESLint
 
 ## 🎯 Goals
 
-- [x] Get cozy with `Node JS` for building strong backend systems.
-- [x] Explore `Express JS` and its key elements: Router, Controller, and Middleware
-- [x] Dive into `MongoDB` and ace querying techniques with `Mongoose` ODM
-- [x] Create a custom error handler for smooth and consistent error management across all services
+- [x] Build a robust backend system with Node.js and Express.js
+- [x] Implement secure authentication with multiple providers (Google, Anonymous)
+- [x] Create efficient data models and queries with MongoDB and Mongoose
+- [x] Develop a custom error handling system for consistent error management
+- [x] Implement end-to-end encryption for secure message exchange
+- [x] Design and implement a scalable file storage system for sketches
+- [x] Create a flexible user profile system with customizable visibility
 
 ## 🖼️ Screenshots
 
