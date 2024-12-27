@@ -1,6 +1,7 @@
 import cors from 'cors'
 import { config } from 'dotenv'
 import express, { json } from 'express'
+import 'express-async-errors'
 import morgan from 'morgan'
 import { homePage } from './controllers/home/index'
 import { handleError } from './middlewares/handle-error'
