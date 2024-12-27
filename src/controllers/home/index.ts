@@ -1,4 +1,4 @@
-import { env } from '../constants/env'
+import { env } from '../../constants/env'
 
 export const homePage = ({ heading }: { heading: string }) => {
   const html = `

@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getAllStats } from '../controllers/stat'
+import { getAllStats } from '../controllers/stat/index'
 
 const router = Router()
 

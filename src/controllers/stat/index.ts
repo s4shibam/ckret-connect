@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import { mg } from '../models/index'
-import { throwError } from '../utils/throw-error'
+import { mg } from '../../models'
+import { throwError } from '../../utils/throw-error'
 
 /*
 USE: Get platform stats

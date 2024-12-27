@@ -1,17 +1,15 @@
 import { Router } from 'express'
-import {
-  anonymousSignIn,
-  anonymousSignUp,
-  getUserDetailsByUsername,
-  getUserProfileByUsername,
-  googleProviderSignIn,
-  linkGoogleAccount,
-  toggleInboxStatus,
-  updateAvatar,
-  updateFeedbackMessage,
-  updateName,
-  updateUsername
-} from '../controllers/user'
+import { anonymousSignIn } from '../controllers/user/anonymous-signin'
+import { anonymousSignUp } from '../controllers/user/anonymous-signup'
+import { getUserDetailsByUsername } from '../controllers/user/get-user-details-by-username'
+import { getUserProfileByUsername } from '../controllers/user/get-user-profile-by-username'
+import { googleProviderSignIn } from '../controllers/user/google-provider-signin'
+import { linkGoogleAccount } from '../controllers/user/link-google-account'
+import { toggleInboxStatus } from '../controllers/user/toggle-inbox-status'
+import { updateAvatar } from '../controllers/user/update-avatar'
+import { updateFeedbackMessage } from '../controllers/user/update-feedback-message'
+import { updateName } from '../controllers/user/update-name'
+import { updateUsername } from '../controllers/user/update-username'
 import { isAuthenticated } from '../middlewares/is-authenticated'
 
 const router = Router()
