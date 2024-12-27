@@ -1,22 +1,22 @@
 {
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit",
+    "source.removeUnusedImports": "explicit"
+  },
   "search.exclude": {
     "package-lock.json": true
   },
-
-  "editor.formatOnSave": true,
-
-  "editor.codeActionsOnSave": {
-    "source.addMissingImports": "always",
-    "source.fixAll.eslint": "explicit",
-    "source.organizeImports": "explicit"
-  },
-
-  "[json][jsonc][yaml]": {
-    "editor.formatOnSave": true,
+  "[json][jsonc][yaml][typescript][javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-
-  "eslint.validate": ["javascript"],
-  "eslint.run": "onSave",
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "eslint.validate": ["typescript"],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.preferences.importModuleSpecifier": "relative",
   "cSpell.words": ["ckret"]
 }

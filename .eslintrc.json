@@ -1,26 +1,27 @@
 {
   "env": {
-    "es2021": true,
-    "node": true
+    "node": true,
+    "es2022": true
   },
-  "extends": ["eslint:recommended", "plugin:import/recommended", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": "latest",
+    "ecmaVersion": 2022,
     "sourceType": "module"
   },
+  "plugins": ["@typescript-eslint"],
   "rules": {
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
-    "no-undef": "error",
-    "import/no-unresolved": "error",
-    "import/named": "error",
-    "import/default": "error",
-    "import/namespace": "error"
-  },
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [".js"]
-      }
-    }
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_" }
+    ],
+    "no-var": "error",
+    "prefer-const": "error",
+    "@typescript-eslint/no-explicit-any": "off",
+    "eqeqeq": ["error", "always"]
   }
 }
