@@ -6,7 +6,7 @@
 
 <div align="center">
     <h1>Ckret Connect</h1>
-    <p>Anonymous Messaging Platform - Backend</p>
+    <p>Anonymous Interaction Platform - Backend</p>
 </div>
 
 <p align="center">
@@ -37,6 +37,7 @@ Ckret is a comprehensive anonymous interaction platform that enables users to ex
 
 - Node JS
 - Express JS
+- Typescript
 - MongoDB
 - Cloudinary
 
@@ -50,7 +51,7 @@ Ckret is a comprehensive anonymous interaction platform that enables users to ex
 
 ## 🎯 Goals
 
-- [x] Build a robust backend system with Node.js and Express.js
+- [x] Build a robust backend system with Node.js and Express.js with Typescript
 - [x] Implement secure authentication with multiple providers (Google, Anonymous)
 - [x] Create efficient data models and queries with MongoDB and Mongoose
 - [x] Develop a custom error handling system for consistent error management
