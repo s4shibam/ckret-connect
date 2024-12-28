@@ -6,7 +6,7 @@
 
 <div align="center">
     <h1>Ckret Connect</h1>
-    <p>Anonymous Messaging Platform - Backend</p>
+    <p>Anonymous Interaction Platform - Backend</p>
 </div>
 
 <p align="center">
