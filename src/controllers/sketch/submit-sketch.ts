@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
 import mongoose from 'mongoose'
 import { mg } from '../../models'
-import { uploadToCloudinary } from '../../services/cloudinary'
 import { throwError } from '../../utils/throw-error'
 
 type TSubmitSketchReqBody = {
   recipientUsername: string
+  sketchUrl?: string
 }
 
 /*
@@ -14,14 +14,11 @@ ROUTE: sketch/submit
 METHOD: POST
 */
 export const submitSketch = async (req: Request, res: Response) => {
-  const { recipientUsername } = req.body as TSubmitSketchReqBody
-  const sketchFile = req.file as Express.Multer.File
+  const { recipientUsername, sketchUrl } = req.body as TSubmitSketchReqBody
 
-  if (!recipientUsername || !sketchFile) {
+  if (!recipientUsername || !sketchUrl) {
     throwError('Insufficient details', 400)
   }
-
-  const sketchData = `data:${sketchFile.mimetype};base64,${sketchFile.buffer.toString('base64')}`
 
   const isMongoId = mongoose.Types.ObjectId.isValid(recipientUsername)
   const query = isMongoId
@@ -45,13 +42,6 @@ export const submitSketch = async (req: Request, res: Response) => {
       `${user.name}'s sketch inbox is full. To allow new sketches, request that some old ones be deleted.`,
       400
     )
-  }
-
-  let sketchUrl
-  try {
-    sketchUrl = await uploadToCloudinary(sketchData)
-  } catch {
-    throwError('Failed to upload sketch', 500)
   }
 
   await mg.sketch.create({
