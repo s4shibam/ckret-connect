@@ -1,8 +1,9 @@
+import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { env } from '../constants/env.js'
 import { CHAR_SIZE_LIMIT, DEFAULT_CONFIG } from '../constants/index.js'
 import { TUser } from '../types/models.js'
-
+import { throwError } from './throw-error.js'
 export const generateToken = ({
   obj,
   expiresIn = '1d'
@@ -17,6 +18,25 @@ export const generateToken = ({
 
 export const verifyToken = ({ token }: { token: string }) => {
   return jwt.verify(token, env.jwt_secret)
+}
+
+export const hashPassword = async (password?: string) => {
+  if (!password) {
+    throwError('Password is required', 400)
+  }
+
+  return await bcryptjs.hash(password, 10)
+}
+
+export const comparePassword = async (
+  password?: string,
+  hashedPassword?: string
+) => {
+  if (!password || !hashedPassword) {
+    throwError('Password is required', 400)
+  }
+
+  return await bcryptjs.compare(password, hashedPassword)
 }
 
 export const createSigninResponseObj = (

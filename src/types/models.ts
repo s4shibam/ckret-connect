@@ -16,9 +16,6 @@ export type TUser = {
   sketch_max_size: number
   is_inbox_enabled: boolean
   password?: string
-
-  // Schema methods
-  comparePassword: (inputPassword: string) => Promise<boolean>
 }
 
 export type TUserDoc = TUser & Document

@@ -3,6 +3,7 @@ import { AUTH_PROVIDER, CHAR_SIZE_LIMIT } from '../../constants/index'
 import { mg } from '../../models'
 import {
   createSigninResponseObj,
+  hashPassword,
   isInvalidLength,
   isValidUsername
 } from '../../utils/index'
@@ -41,10 +42,12 @@ export const anonymousSignUp = async (req: Request, res: Response) => {
     throwError('Username already taken', 400)
   }
 
+  const hashedPassword = await hashPassword(password)
+
   const newUser = await mg.user.create({
     name: username,
     username,
-    password,
+    password: hashedPassword,
     email: `${username}@anonymous.user`,
     auth_provider: AUTH_PROVIDER.anonymous
   })

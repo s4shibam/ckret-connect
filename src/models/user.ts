@@ -1,5 +1,4 @@
-import bcryptjs from 'bcryptjs'
-import { CallbackError, Schema, model } from 'mongoose'
+import { Schema, model } from 'mongoose'
 import validator from 'validator'
 import { AUTH_PROVIDER, DEFAULT_CONFIG } from '../constants/index.js'
 import { TUser } from '../types/models'
@@ -71,19 +70,3 @@ const schema = new Schema<TUser>(
 const userModel = model<TUser>('user', schema)
 
 export default userModel
-
-// Hash password before saving
-schema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next()
-  try {
-    this.password = await bcryptjs.hash(this.password as string, 10)
-    next()
-  } catch (error) {
-    next(error as CallbackError)
-  }
-})
-
-// Method to compare password
-schema.methods.comparePassword = async function (inputPassword: string) {
-  return await bcryptjs.compare(inputPassword, this.password)
-}

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { AUTH_PROVIDER } from '../../constants/index'
 import { mg } from '../../models'
-import { createSigninResponseObj } from '../../utils/index'
+import { comparePassword, createSigninResponseObj } from '../../utils/index'
 import { throwError } from '../../utils/throw-error'
 
 type TAnonymousSignInReqBody = {
@@ -32,7 +32,7 @@ export const anonymousSignIn = async (req: Request, res: Response) => {
     throwError('Invalid credentials', 401)
   }
 
-  const isPasswordValid = await user.comparePassword(password)
+  const isPasswordValid = await comparePassword(password, user.password)
   if (!isPasswordValid) {
     throwError('Invalid credentials', 401)
   }
