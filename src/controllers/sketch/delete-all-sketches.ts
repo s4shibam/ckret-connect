@@ -9,7 +9,7 @@ ROUTE: sketch/all
 METHOD: DELETE
 */
 export const deleteAllSketches = async (req: Request, res: Response) => {
-  const { _id } = req?.user
+  const { _id } = req.user
 
   const sketches = await mg.sketch.find({ recipient: _id })
 

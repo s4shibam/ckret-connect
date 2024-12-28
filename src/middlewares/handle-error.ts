@@ -5,9 +5,9 @@ import { TErrorResponse } from '../types/common.js'
 // eslint-disable-next-line no-unused-vars
 export const handleError = (
   err: TErrorResponse,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   const errorResponse: TErrorResponse = {
     message: err.message || 'Unknown error occurred',

@@ -7,7 +7,7 @@ ROUTE: message/all
 METHOD: GET
 */
 export const getAllMessages = async (req: Request, res: Response) => {
-  const messages = await mg.message.find({ recipient: req?.user?._id }).sort({
+  const messages = await mg.message.find({ recipient: req.user._id }).sort({
     createdAt: -1
   })
 

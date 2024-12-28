@@ -50,7 +50,7 @@ export const submitSketch = async (req: Request, res: Response) => {
   let sketchUrl
   try {
     sketchUrl = await uploadToCloudinary(sketchData)
-  } catch (error) {
+  } catch {
     throwError('Failed to upload sketch', 500)
   }
 

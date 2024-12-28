@@ -7,7 +7,7 @@ ROUTE: sketch/all
 METHOD: GET
 */
 export const getAllSketches = async (req: Request, res: Response) => {
-  const sketches = await mg.sketch.find({ recipient: req?.user?._id }).sort({
+  const sketches = await mg.sketch.find({ recipient: req.user._id }).sort({
     createdAt: -1
   })
 

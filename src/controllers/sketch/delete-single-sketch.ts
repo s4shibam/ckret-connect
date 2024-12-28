@@ -16,7 +16,7 @@ export const deleteSingleSketch = async (req: Request, res: Response) => {
 
   const sketch = await mg.sketch.findOne({
     _id: sid,
-    recipient: req?.user?._id
+    recipient: req.user._id
   })
 
   if (!sketch) {
