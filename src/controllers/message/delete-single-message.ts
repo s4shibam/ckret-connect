@@ -15,14 +15,13 @@ export const deleteSingleMessage = async (req: Request, res: Response) => {
   const user = req.user
   const { mid } = req?.params as TDeleteSingleMessageReqParams
 
-  const message = await mg.message.findById(mid)
+  const message = await mg.message.findOne({
+    _id: mid,
+    recipient: user._id
+  })
 
   if (!message) {
     throwError('Message not found', 404)
-  }
-
-  if (message.recipient.toString() !== user._id.toString()) {
-    throwError('Not authorized to delete this message', 403)
   }
 
   await message.deleteOne()
