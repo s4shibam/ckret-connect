@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { mg } from '../../models'
+import { deleteFromCloudinary } from '../../services/cloudinary'
 import { throwError } from '../../utils/throw-error'
 
 type TDeleteSingleSketchReqParams = {
@@ -13,17 +14,17 @@ METHOD: DELETE
 export const deleteSingleSketch = async (req: Request, res: Response) => {
   const { sid } = req?.params as TDeleteSingleSketchReqParams
 
-  const sketch = await mg.sketch.findById(sid)
+  const sketch = await mg.sketch.findOne({
+    _id: sid,
+    recipient: req?.user?._id
+  })
 
   if (!sketch) {
     throwError('Sketch not found', 404)
   }
 
-  if (sketch.recipient.toString() !== req?.user?._id.toString()) {
-    throwError('Not authorized to delete this sketch', 403)
-  }
-
   await sketch.deleteOne()
+  await deleteFromCloudinary(sketch.sketch_url)
 
   res.status(200).json({
     message: 'Successfully deleted the sketch'
