@@ -27,14 +27,18 @@ export const getUserDetailsByUsername = async (req: Request, res: Response) => {
 
   query.is_inbox_enabled = true
 
-  const user = await mg.user.findOne(query).select({
-    _id: 1,
-    name: 1,
-    username: 1,
-    avatar: 1,
-    feedback_message: 1,
-    inbox_max_size: 1
-  })
+  const user = await mg.user
+    .findOne(query)
+    .select({
+      _id: 1,
+      name: 1,
+      username: 1,
+      feedback_message: 1,
+      inbox_max_size: 1,
+      sketch_max_size: 1,
+      message_max_length: 1
+    })
+    .lean()
 
   if (!user) {
     throwError('User not found', 404)
@@ -44,24 +48,31 @@ export const getUserDetailsByUsername = async (req: Request, res: Response) => {
     recipient: user._id
   })
 
-  const isInboxFull = currentMessageCount >= user.inbox_max_size
+  const currentSketchCount = await mg.sketch.countDocuments({
+    recipient: user._id
+  })
 
-  if (isInboxFull) {
+  const isMessageInboxFull = currentMessageCount >= user.inbox_max_size
+  const isSketchInboxFull = currentSketchCount >= user.sketch_max_size
+
+  const userResponse = {
+    ...user,
+    inbox_max_size: undefined,
+    sketch_max_size: undefined,
+    is_message_inbox_full: isMessageInboxFull || undefined,
+    is_sketch_inbox_full: isSketchInboxFull || undefined
+  }
+
+  if (isMessageInboxFull || isSketchInboxFull) {
     res.status(200).json({
-      message: `${user.name}'s inbox is full. To allow new messages, request that some old ones be deleted.`,
-      data: {
-        ...user.toJSON(),
-        is_inbox_full: isInboxFull
-      }
+      message: `Oops! ${user.name}'s inbox is packed right now. Ask to delete some old messages so you can send new ones!`,
+      data: userResponse
     })
     return
   }
 
   res.status(200).json({
     message: 'Successfully fetched user details',
-    data: {
-      ...user.toJSON(),
-      is_inbox_full: isInboxFull
-    }
+    data: userResponse
   })
 }
