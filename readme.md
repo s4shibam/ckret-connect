@@ -49,6 +49,10 @@ Ckret is a comprehensive anonymous interaction platform that enables users to ex
 - Multer
 - ESLint
 
+## 🔗 Frontend Repository
+
+Check out the frontend implementation for Ckret: [Ckret Frontend](https://github.com/s4shibam/ckret)
+
 ## 🎯 Goals
 
 - [x] Build a robust backend system with Node.js and Express.js with Typescript
@@ -57,6 +61,7 @@ Ckret is a comprehensive anonymous interaction platform that enables users to ex
 - [x] Develop a custom error handling system for consistent error management
 - [x] Implement end-to-end encryption for secure message exchange
 - [x] Design and implement a scalable file storage system for sketches
+- [x] Implement secure resource access using signed URLs
 - [x] Create a flexible user profile system with customizable visibility
 
 ## 🖼️ Screenshots
