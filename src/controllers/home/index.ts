@@ -67,15 +67,15 @@ export const homePage = ({ heading }: { heading: string }) => {
         user-select: none;
       }
       .logo {
-        height: 60px;
-        width: 60px;
+        height: 52px;
+        width: 52px;
         margin: auto auto;
       }
       .logo-text {
         margin: auto auto;
         font-size: 30px;
         font-weight: 700;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.025em;
       }
     </style>
   </head>
@@ -83,7 +83,7 @@ export const homePage = ({ heading }: { heading: string }) => {
     <div class="container">
       <a class="logo-wrapper" href="${env.ckret_url}" target="_blank">
         <img src="${env.ckret_logo_url}" class="logo" />
-        <h1 class="logo-text">Ckret.</h1>
+        <h1 class="logo-text">Ckret<span style="color: #E52E71">.</span></h1>
       </a>
 
       <h2 style="margin-bottom: 0">${heading}</h2>
