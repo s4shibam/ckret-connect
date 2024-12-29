@@ -22,6 +22,8 @@ router.post('/auth/google-signin', googleProviderSignIn)
 
 router.get('/details/:username', getUserDetailsByUsername)
 
+router.get('/profile/:username', getUserProfileByUsername)
+
 // Authenticated user routes
 
 router.use(isAuthenticated)
@@ -37,7 +39,5 @@ router.put('/avatar', updateAvatar)
 router.put('/feedback-message', updateFeedbackMessage)
 
 router.put('/inbox-status', toggleInboxStatus)
-
-router.get('/profile/:username', getUserProfileByUsername)
 
 export { router as userRouter }
