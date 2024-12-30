@@ -1,12 +1,12 @@
 import mongoose from 'mongoose'
 import { mg } from '../src/models'
-import { connectToDB } from '../src/services/db'
+import { connectMongo } from '../src/services/db'
 import { encryptMessage } from '../src/utils/crypto'
 
 const migrateMessages = async () => {
   try {
     // Connect to database
-    await connectToDB()
+    await connectMongo()
 
     // Find all messages with old content field
     const messages = await mg.message.find({ content: { $exists: true } })
