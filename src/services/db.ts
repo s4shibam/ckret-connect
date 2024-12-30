@@ -7,18 +7,18 @@ export const connectMongo = async () => {
     const { connection } = await mongoose.connect(env.db_url)
 
     console.log(
-      colors.cyan(`Database connected to "${connection.db?.databaseName}"`)
+      colors.cyan(`Mongo connected to "${connection.db?.databaseName}"`)
     )
   } catch (error) {
-    console.log(`Database connection error: ${error}`.red)
+    console.log(`Mongo connection error: ${error}`.red)
   }
 }
 
 export const disconnectMongo = async () => {
   try {
     await mongoose.connection.close()
-    console.log('Database connection closed'.yellow)
+    console.log('Mongo connection closed'.yellow)
   } catch (error) {
-    console.log(`Database disconnection error: ${error}`.red)
+    console.log(`Mongo disconnection error: ${error}`.red)
   }
 }
