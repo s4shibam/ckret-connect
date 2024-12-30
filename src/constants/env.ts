@@ -18,6 +18,8 @@ type TEnv = {
   cloudinary_api_key: string | 'env-not-set'
   cloudinary_api_secret: string | 'env-not-set'
   cloudinary_folder: string | 'env-not-set'
+  redis_url: string | 'env-not-set'
+  enable_caching: boolean
 }
 
 export const env: TEnv = {
@@ -32,5 +34,7 @@ export const env: TEnv = {
   cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'env-not-set',
   cloudinary_api_key: process.env.CLOUDINARY_API_KEY || 'env-not-set',
   cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET || 'env-not-set',
-  cloudinary_folder: process.env.CLOUDINARY_FOLDER || 'env-not-set'
+  cloudinary_folder: process.env.CLOUDINARY_FOLDER || 'env-not-set',
+  redis_url: process.env.REDIS_URL || 'env-not-set',
+  enable_caching: process.env.ENABLE_CACHING === 'true'
 }
