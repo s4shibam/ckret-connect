@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { mg } from '../../models'
 import { deleteFromCloudinary } from '../../services/cloudinary'
+import { invalidateUserCaches } from '../../utils/cache'
 import { throwError } from '../../utils/throw-error'
 
 /*
@@ -25,6 +26,8 @@ export const deleteAllSketches = async (req: Request, res: Response) => {
   await Promise.all(sketchDeletePromises).catch((error) => {
     console.log(`Failed to delete sketches of user ${_id}`, error)
   })
+
+  await invalidateUserCaches(_id.toString())
 
   res.status(200).json({
     message: 'Successfully deleted all sketches'
