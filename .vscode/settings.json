@@ -18,5 +18,5 @@
   "eslint.validate": ["typescript"],
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.preferences.importModuleSpecifier": "relative",
-  "cSpell.words": ["ckret"]
+  "cSpell.words": ["appendonly", "ckret", "healthcheck"]
 }
