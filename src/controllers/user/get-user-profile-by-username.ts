@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import { mg } from '../../models'
 import { withCache } from '../../services/redis'
 import { TMessage, TSketch, TUser } from '../../types/models'
+import { decryptMessage } from '../../utils/crypto'
 import { throwError } from '../../utils/throw-error'
 
 type TGetUserProfileByUsernameReqParams = {
@@ -54,19 +55,32 @@ export const getUserProfileByUsername = async (
           recipient: user._id,
           show_in_profile: true
         })
-        .sort({ updatedAt: -1 }),
+        .sort({ updatedAt: -1 })
+        .lean(),
       mg.sketch
         .find({
           recipient: user._id,
           show_in_profile: true
         })
         .sort({ updatedAt: -1 })
+        .lean()
     ])
 
+    const decryptedMessages = publicMessages.map((message) => ({
+      ...message,
+      content: decryptMessage(message.encrypted_content),
+      reply: decryptMessage(message.encrypted_reply)
+    }))
+
+    const decryptedSketches = publicSketches.map((sketch) => ({
+      ...sketch,
+      reply: decryptMessage(sketch.encrypted_reply)
+    }))
+
     return {
-      ...user.toJSON(),
-      messages: publicMessages,
-      sketches: publicSketches
+      ...user,
+      messages: decryptedMessages,
+      sketches: decryptedSketches
     }
   }
 

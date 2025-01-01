@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { mg } from '../../models'
 import { withCache } from '../../services/redis'
+import { decryptMessage } from '../../utils/crypto'
 
 /*
 USE: Get all messages
@@ -11,12 +12,19 @@ export const getAllMessages = async (req: Request, res: Response) => {
   const userId = req.user._id.toString()
 
   const _getMessages = async () => {
-    return mg.message
+    const encryptedMessages = await mg.message
       .find({ recipient: req.user._id })
       .sort({
         createdAt: -1
       })
       .lean()
+
+    const decryptedMessages = encryptedMessages.map((message) => ({
+      ...message,
+      content: decryptMessage(message.encrypted_content)
+    }))
+
+    return decryptedMessages
   }
 
   const messages = await withCache({
