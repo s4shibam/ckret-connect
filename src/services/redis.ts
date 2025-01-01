@@ -69,10 +69,6 @@ export const withCache = async <T>({
 
   const data = await fn()
 
-  await new Promise((res) => setTimeout(res, 3000))
-
-  console.log('setting cache')
-
   if (data) {
     await redis.set(finalKey, JSON.stringify(data), 'EX', options.ttl || 3600)
   }
