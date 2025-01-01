@@ -22,7 +22,7 @@ export const getAllSketches = async (req: Request, res: Response) => {
   const sketches = await withCache({
     key: `sketches:${userId}`,
     fn: _getSketches,
-    options: { ttl: 60 * 10 }
+    options: { ttl: 60 }
   })
 
   res.status(200).json({

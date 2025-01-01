@@ -30,7 +30,7 @@ export const getAllMessages = async (req: Request, res: Response) => {
   const messages = await withCache({
     key: `messages:${userId}`,
     fn: _getMessages,
-    options: { ttl: 60 * 10 }
+    options: { ttl: 60 }
   })
 
   res.status(200).json({
