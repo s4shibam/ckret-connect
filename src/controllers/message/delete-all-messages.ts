@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { mg } from '../../models'
+import { invalidateUserCaches } from '../../utils/cache'
 import { throwError } from '../../utils/throw-error'
 
 /*
@@ -15,6 +16,8 @@ export const deleteAllMessages = async (req: Request, res: Response) => {
   if (result.deletedCount === 0) {
     throwError(`No messages found for ${user.name}`, 404)
   }
+
+  await invalidateUserCaches(user._id.toString())
 
   res.status(200).json({
     message: 'Successfully deleted all the messages'

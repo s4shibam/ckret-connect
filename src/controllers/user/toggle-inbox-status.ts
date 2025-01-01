@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { invalidateUserCaches } from '../../utils/cache'
 
 /*
 USE: Toggle inbox status 
@@ -14,6 +15,8 @@ export const toggleInboxStatus = async (req: Request, res: Response) => {
   await user.save()
 
   const updatedInboxStatus = !initialInboxStatus ? 'enabled' : 'disabled'
+
+  await invalidateUserCaches(user._id.toString())
 
   res.status(200).json({
     message: `Inbox ${updatedInboxStatus}`,

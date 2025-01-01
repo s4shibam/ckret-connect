@@ -24,10 +24,10 @@ export type TMessage = {
   _id: ObjectId
   recipient: ObjectId
   encrypted_content: string
-  content?: string // Available after transform
+  content?: string // Available after decryption
   message_type: typeof MESSAGE_TYPE.anonymous_message
   encrypted_reply: string | null
-  reply?: string // Available after transform
+  reply?: string // Available after decryption
   show_in_profile: boolean
 }
 
@@ -39,7 +39,7 @@ export type TSketch = {
   sketch_url: string
   type: typeof MESSAGE_TYPE.anonymous_sketch
   encrypted_reply: string | null
-  reply?: string // Available after transform
+  reply?: string // Available after decryption
   show_in_profile: boolean
 }
 

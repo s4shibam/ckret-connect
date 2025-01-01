@@ -9,15 +9,11 @@ import { messageRouter } from './routes/message'
 import { sketchRouter } from './routes/sketch'
 import { statRouter } from './routes/stat'
 import { userRouter } from './routes/user'
-import { connectToDB } from './services/db'
 import { throwError } from './utils/throw-error'
 
 // Initialization
 const app = express()
 config()
-
-// Database connection
-connectToDB()
 
 // Middleware configuration
 app.use(json())
@@ -25,17 +21,17 @@ app.use(cors())
 app.use(morgan('dev'))
 app.use(express.static('public'))
 
-// Ckret Connect Home Route
+// Ckret Connect home route
 app.get('/', (_, res) => {
   res.status(200).send(homePage({ heading: 'Ckret Connect' }))
 })
 
-// API v1 Home Route
+// API v1 home route
 app.get('/api/v1', (_, res) => {
   res.status(200).send(homePage({ heading: 'Ckret Connect - API v1' }))
 })
 
-// API v1 Routes
+// API v1 routes
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/message', messageRouter)
 app.use('/api/v1/stat', statRouter)
@@ -46,7 +42,7 @@ app.all('*', (req) => {
   throwError(`Route '${req.originalUrl}' not found`, 404)
 })
 
-// Error Middleware configuration
+// Error middleware configuration
 app.use(handleError)
 
 export default app

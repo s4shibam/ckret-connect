@@ -2,18 +2,23 @@ import colors from 'colors'
 import mongoose from 'mongoose'
 import { env } from '../constants/env'
 
-// MongoDB connection via mongoose
-export const connectToDB = async () => {
+export const connectMongo = async () => {
   try {
-    const queries = 'retryWrites=true&w=majority'
-    const databaseUrl = `${env.db_connection_string}/${env.db_name}?${queries}`
-
-    const { connection } = await mongoose.connect(databaseUrl)
+    const { connection } = await mongoose.connect(env.db_url)
 
     console.log(
-      colors.cyan(`Database Connected to "${connection.db?.databaseName}"`)
+      colors.cyan(`Mongo connected to "${connection.db?.databaseName}"`)
     )
   } catch (error) {
-    console.log(`DB connection error: ${error}`.red)
+    console.log(`Mongo connection error: ${error}`.red)
+  }
+}
+
+export const disconnectMongo = async () => {
+  try {
+    await mongoose.connection.close()
+    console.log('Mongo connection closed'.yellow)
+  } catch (error) {
+    console.log(`Mongo disconnection error: ${error}`.red)
   }
 }
