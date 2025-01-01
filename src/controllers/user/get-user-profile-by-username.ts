@@ -37,13 +37,16 @@ export const getUserProfileByUsername = async (
   const query = isMongoId ? { _id: username } : { username }
 
   const getUserProfile = async (): Promise<TUserProfileResponse> => {
-    const user = await mg.user.findOne(query).select({
-      _id: 1,
-      name: 1,
-      username: 1,
-      avatar: 1,
-      is_inbox_enabled: 1
-    })
+    const user = await mg.user
+      .findOne(query)
+      .select({
+        _id: 1,
+        name: 1,
+        username: 1,
+        avatar: 1,
+        is_inbox_enabled: 1
+      })
+      .lean()
 
     if (!user || !user.is_inbox_enabled) {
       throwError('User not found', 404)
@@ -66,14 +69,17 @@ export const getUserProfileByUsername = async (
         .lean()
     ])
 
-    const decryptedMessages = publicMessages.map((message) => ({
+    const decryptedMessages: TMessage[] = publicMessages.map((message) => ({
       ...message,
+      encrypted_content: '',
+      encrypted_reply: '',
       content: decryptMessage(message.encrypted_content),
       reply: decryptMessage(message.encrypted_reply)
     }))
 
     const decryptedSketches = publicSketches.map((sketch) => ({
       ...sketch,
+      encrypted_reply: '',
       reply: decryptMessage(sketch.encrypted_reply)
     }))
 
