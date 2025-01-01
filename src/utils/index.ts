@@ -1,9 +1,9 @@
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { env } from '../constants/env.js'
-import { CHAR_SIZE_LIMIT, DEFAULT_CONFIG } from '../constants/index.js'
-import { TUser } from '../types/models.js'
-import { throwError } from './throw-error.js'
+import { env } from '../constants/env'
+import { CHAR_SIZE_LIMIT, DEFAULT_CONFIG } from '../constants/index'
+import { TUser } from '../types/models'
+import { throwError } from './throw-error'
 export const generateToken = ({
   obj,
   expiresIn = '1d'

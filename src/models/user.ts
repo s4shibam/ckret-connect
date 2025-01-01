@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 import validator from 'validator'
-import { AUTH_PROVIDER, DEFAULT_CONFIG } from '../constants/index.js'
+import { AUTH_PROVIDER, DEFAULT_CONFIG } from '../constants/index'
 import { TUser } from '../types/models'
 
 const schema = new Schema<TUser>(

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
-import User from '../models/user.js'
-import { verifyToken } from '../utils/index.js'
-import { throwError } from '../utils/throw-error.js'
+import User from '../models/user'
+import { verifyToken } from '../utils/index'
+import { throwError } from '../utils/throw-error'
 
 export const isAuthenticated = async (
   req: Request,

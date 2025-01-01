@@ -1,7 +1,7 @@
 import mongoose, { model, Schema } from 'mongoose'
-import { MESSAGE_TYPE } from '../constants/index.js'
+import { MESSAGE_TYPE } from '../constants/index'
 import { TSketch } from '../types/models'
-import { decryptMessage } from '../utils/crypto.js'
+import { decryptMessage } from '../utils/crypto'
 
 const sketchSchema = new Schema<TSketch>(
   {

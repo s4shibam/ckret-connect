@@ -1,6 +1,6 @@
 import { Request } from 'express'
 import multer from 'multer'
-import { throwError } from '../utils/throw-error.js'
+import { throwError } from '../utils/throw-error'
 
 const storage = multer.memoryStorage()
 
