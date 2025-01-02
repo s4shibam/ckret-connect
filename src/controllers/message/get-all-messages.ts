@@ -19,10 +19,19 @@ export const getAllMessages = async (req: Request, res: Response) => {
       })
       .lean()
 
-    const decryptedMessages = encryptedMessages.map((message) => ({
-      ...message,
-      content: decryptMessage(message.encrypted_content)
-    }))
+    const decryptedMessages = encryptedMessages.map((message) => {
+      if (message.encrypted_content) {
+        message.content = decryptMessage(message.encrypted_content)
+        message.encrypted_content = ''
+      }
+
+      if (message.encrypted_reply) {
+        message.reply = decryptMessage(message.encrypted_reply)
+        message.encrypted_reply = ''
+      }
+
+      return message
+    })
 
     return decryptedMessages
   }

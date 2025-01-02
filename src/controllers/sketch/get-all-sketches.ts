@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { mg } from '../../models'
 import { withCache } from '../../services/redis'
+import { decryptMessage } from '../../utils/crypto'
 
 /*
 USE: Get all sketches
@@ -11,12 +12,23 @@ export const getAllSketches = async (req: Request, res: Response) => {
   const userId = req.user._id.toString()
 
   const _getSketches = async () => {
-    return mg.sketch
+    const encryptedSketches = await mg.sketch
       .find({ recipient: req.user._id })
       .sort({
         createdAt: -1
       })
       .lean()
+
+    const decryptedSketches = encryptedSketches.map((sketch) => {
+      if (sketch.encrypted_reply) {
+        sketch.reply = decryptMessage(sketch.encrypted_reply)
+        sketch.encrypted_reply = ''
+      }
+
+      return sketch
+    })
+
+    return decryptedSketches
   }
 
   const sketches = await withCache({
