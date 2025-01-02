@@ -1,5 +1,6 @@
 import Redis from 'ioredis'
 import { env } from '../constants/env'
+import { log } from './log'
 
 let redis: Redis | null = null
 
@@ -60,16 +61,25 @@ export const withCache = async <T>({
   }
 
   const finalKey = options.prefix ? `${options.prefix}:${key}` : key
-  const cachedData = await redis.get(finalKey)
 
-  if (cachedData) {
-    return JSON.parse(cachedData) as T
+  try {
+    const cachedData = await redis.get(finalKey)
+
+    if (cachedData) {
+      return JSON.parse(cachedData) as T
+    }
+  } catch (error) {
+    log.error('Failed to get cached data', { key: finalKey, error })
   }
 
   const data = await fn()
 
   if (data) {
-    await redis.set(finalKey, JSON.stringify(data), 'EX', options.ttl || 3600)
+    try {
+      await redis.set(finalKey, JSON.stringify(data), 'EX', options.ttl || 3600)
+    } catch (error) {
+      log.error('Failed to cache data', { key: finalKey, error })
+    }
   }
 
   return data
@@ -82,7 +92,11 @@ export const invalidateCache = async (pattern: string): Promise<void> => {
 
   const keys = await redis.keys(pattern)
   if (keys.length > 0) {
-    await redis.del(...keys)
+    try {
+      await redis.del(...keys)
+    } catch (error) {
+      log.error('Failed to invalidate cache', { pattern, error })
+    }
   }
 }
 
