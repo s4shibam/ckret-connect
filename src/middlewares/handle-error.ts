@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from 'express'
-import { env } from '../constants/env.js'
-import { TErrorResponse } from '../types/common.js'
+import { env } from '../constants/env'
+import { log } from '../services/log'
+import { TErrorResponse } from '../types/common'
 
 // eslint-disable-next-line no-unused-vars
-export const handleError = (
+export const handleError = async (
   err: TErrorResponse,
-  _req: Request,
+  req: Request,
   res: Response,
   _next: NextFunction
 ) => {
@@ -15,7 +16,16 @@ export const handleError = (
     stack: env.node_env === 'dev' ? err.stack : undefined
   }
 
-  console.log('errorResponse:', errorResponse)
+  log.error(errorResponse.message, {
+    method: req.method,
+    path: req.path,
+    query: req.query,
+    body: req.body,
+    userId: req.user?._id.toString(),
+    statusCode: errorResponse.statusCode,
+    stack: errorResponse.stack,
+    ip: req.ip
+  })
 
   res.status(errorResponse.statusCode).json(errorResponse)
 }
