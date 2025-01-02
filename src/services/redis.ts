@@ -17,8 +17,7 @@ export const initRedis = () => {
     retryStrategy: (times: number) => {
       const delay = Math.min(times * 50, 2000)
       return delay
-    },
-    tls: env.node_env === 'prod' ? { rejectUnauthorized: false } : undefined
+    }
   })
 
   redis.on('error', (err) => {
