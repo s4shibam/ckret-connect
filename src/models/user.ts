@@ -26,7 +26,7 @@ const schema = new Schema<TUser>(
         validator: function (value: string) {
           if (
             this.auth_provider === AUTH_PROVIDER.anonymous &&
-            value.endsWith('@ckret.xyz')
+            value.endsWith('@anonymous.user')
           ) {
             return true
           }

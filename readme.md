@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://connect.ckret.xyz">
+    <a href="https://connect.ckret.fun">
         <img alt="ckret-connect" width="100" src="public/logo-animated.svg">
     </a>
 </p>
@@ -19,7 +19,7 @@
 
 ## ⚡ Introduction
 
-Ckret Connect is the backend service for the [Ckret](https://ckret.xyz) App [(GitHub)](https://github.com/s4shibam/ckret).
+Ckret Connect is the backend service for the [Ckret](https://ckret.fun) App [(GitHub)](https://github.com/s4shibam/ckret).
 Ckret is a comprehensive anonymous interaction platform that enables users to exchange messages and sketches while maintaining privacy through secure encryption.
 
 ## ✨ Features
